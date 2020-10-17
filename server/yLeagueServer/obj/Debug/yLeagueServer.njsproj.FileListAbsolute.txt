@@ -1,0 +1,3 @@
+F:\dev\yamsleague\server\yLeagueServer\obj\Debug\yLeagueServer.njsprojAssemblyReference.cache
+F:\dev\yamsleague\server\yLeagueServer\obj\Debug\yLeagueServer.njsproj.CoreCompileInputs.cache
+F:\dev\yamsleague\server\yLeagueServer\bin\Microsoft.NodejsTools.WebRole.dll
