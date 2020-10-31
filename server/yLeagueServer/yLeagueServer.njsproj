@@ -30,6 +30,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app.js" />
+    <Content Include="models\board1v1.js" />
+    <Content Include="models\board.js" />
     <Content Include="models\game.js">
       <SubType>Code</SubType>
     </Content>
@@ -37,7 +39,17 @@
     <Content Include="models\game_player.js">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="public\index.html" />
+    <Content Include="public\1v1.html" />
+    <Content Include="public\images\loading.gif" />
+    <Content Include="public\2v2.html" />
+    <Content Include="public\index.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="public\javascripts\main1v1.js" />
+    <Content Include="public\javascripts\main.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="routes\game1v1.js" />
     <Content Include="routes\index.js" />
     <Content Include="routes\game.js" />
     <Content Include="package.json" />

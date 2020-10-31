@@ -10,6 +10,7 @@ const GameSchema = new Schema({
     next_turn_secret: String,
     next_move: Number,
     board: Schema.Types.Mixed,
+    ranks: [],
 });
 
 module.exports = mongoose.model('game', GameSchema);

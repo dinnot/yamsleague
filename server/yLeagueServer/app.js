@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 
 const routes = require('./routes/index');
 const game = require('./routes/game');
+const game1v1 = require('./routes/game1v1');
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/api/v1/game', game);
+app.use('/api/v1/game1v1', game1v1);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -69,4 +71,22 @@ app.set('port', process.env.PORT || 3000);
 
 const server = app.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
+});
+
+const io = require('socket.io')(server);
+app.set('socketio', io);
+
+io.on('connection', socket => {
+    socket.on('join_game', (gameId, name) => {
+        socket.join(`game-${gameId}`);
+        socket.to(`game-${gameId}`).emit('player_joined', name)
+    });
+    socket.on('leave_game', (gameId, name) => {
+        socket.leave(`game-${gameId}`);
+        socket.to(`game-${gameId}`).emit('player_away', name)
+    });
+    socket.on('hold_selection', (gameId, move, index, held) => {
+        socket.to(`game-${gameId}`).emit('hold_selection', move, index, held);
+    });
+    socket.join('games');
 });

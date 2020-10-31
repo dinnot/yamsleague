@@ -4,14 +4,14 @@ const router = express.Router();
 const GameModel = require('../models/game');
 const GameMoveModel = require('../models/game_move');
 const GamePlayerModel = require('../models/game_player');
-const board = require('../models/board');
+const board = require('../models/board1v1');
 
 /** create game */
 router.post('/', function (req, res) {
     const io = req.app.get('socketio');
     const game = new GameModel({
         status: 'waiting',
-        type: 'friendly',
+        type: 'friendly-1v1',
         creator_secret: req.body.secret,
     });
     game.save(function (err) {
@@ -40,7 +40,7 @@ router.post('/', function (req, res) {
 
 /** get all waiting games */
 router.get('/', function (req, res) {
-    GameModel.find().where('type').equals('friendly').select('_id status').exec().then(result => {
+    GameModel.find().where('type').equals('friendly-1v1').select('_id status').exec().then(result => {
         res.send({ games: result });
     }).catch(err => {
         res.send({ error: 'something went wrong :(' });
@@ -150,22 +150,9 @@ router.put('/:id/start', function (req, res) {
                     // build players order
                     shuffle(players, false);
                     players[0].order = 1;
-                    if (players[1].team == players[0].team) {
-                        players[1].order = 3;
-                        players[2].order = 2;
-                        players[3].order = 4;
-                    } else {
-                        players[1].order = 2;
-                        if (players[2].team == players[0].team) {
-                            players[2].order = 3;
-                            players[3].order = 4;
-                        } else {
-                            players[2].order = 4;
-                            players[3].order = 3;
-                        }
-                    }
+                    players[1].order = 2;
 
-                    Promise.all([players[0].save(), players[1].save(), players[2].save(), players[3].save()]).then(results => {
+                    Promise.all([players[0].save(), players[1].save()]).then(results => {
                         // build game board, next_move, next_turn_secret
                         game.next_move = 1;
                         game.next_turn_secret = players[0].secret;
@@ -173,7 +160,7 @@ router.put('/:id/start', function (req, res) {
                         const gameBoard = new board();
                         gameBoard.setRanks(game.ranks);
                         game.board = gameBoard.getData();
-                        for (let i = 0; i < 4; i++) players[i].secret = undefined;
+                        for (let i = 0; i < 2; i++) players[i].secret = undefined;
 
                         game.save(function (err) {
                             if (err) {
@@ -223,7 +210,7 @@ function buildRanks() {
 }
 
 function playersReady(players) {
-    if (players.length !== 4) return false;
+    if (players.length !== 2) return false;
     let team1 = 0;
     let team2 = 0;
     for (const idx in players) {

@@ -9,6 +9,7 @@ const GamePlayerSchema = new Schema({
     secret: String,
     order: Number,
     status: String,
+    team: Number,
 });
 
 module.exports = mongoose.model('game_player', GamePlayerSchema);
