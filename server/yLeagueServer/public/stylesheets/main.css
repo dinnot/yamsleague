@@ -183,9 +183,10 @@ html, body, #game, #game > div {
     background-color: #fff;
 }
 
-.p-cell.temp, .tm-cell.temp, .op1-cell.temp, .op2-cell.temp {
-    color: #999;
-}
+    .p-cell.temp, .tm-cell.temp, .op1-cell.temp, .op2-cell.temp {
+        color: #454545;
+        background-color: #FCE883;
+    }
 
 .p-cell.temp.selected, .tm-cell.temp.selected, .op1-cell.temp.selected, .op2-cell.temp.selected {
     color: white;
@@ -260,8 +261,15 @@ html, body, #game, #game > div {
 
 .action-buttons {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+}
+
+.action-buttons.right {
+    justify-content: flex-end;
+}
+
+.action-buttons.left {
+    justify-content: flex-start;
 }
 
 #rollbtn, #playbtn {

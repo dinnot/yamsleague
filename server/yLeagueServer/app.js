@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 const routes = require('./routes/index');
 const game = require('./routes/game');
 const game1v1 = require('./routes/game1v1');
+const error = require('./routes/error');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/api/v1/game', game);
 app.use('/api/v1/game1v1', game1v1);
+app.use('/api/v1/error', error);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

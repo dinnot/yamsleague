@@ -1,6 +1,13 @@
 const data = {};
 const socket = io();
 
+startErrorLogging();
+
+function startErrorLogging() {
+    uncaught.start();
+    uncaught.addListener(err => post('/api/v1/error', { data: err, browser: navigator.userAgent, player: localStorage.name }));
+}
+
 // socket.io events
 socket.on('players_changed', function (players) {
     data.currentGame.players = players;

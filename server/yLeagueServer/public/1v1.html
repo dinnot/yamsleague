@@ -61,14 +61,16 @@
             <div id="game-table" class="flex-grow-1 flex-column d-flex">
             </div>
             <div id="roll-area" class="flex-row d-flex">
+                <div class="flex-grow-1 action-buttons left">
+                    <button id="playbtn" type="button" class="btn btn-light" onclick="play()">play</button>
+                </div>
                 <div class="dice" id="dice-0">#</div>
                 <div class="dice" id="dice-1">#</div>
                 <div class="dice" id="dice-2">#</div>
                 <div class="dice" id="dice-3">#</div>
                 <div class="dice" id="dice-4">#</div>
-                <div class="flex-grow-1 action-buttons">
+                <div class="flex-grow-1 action-buttons right">
                     <button id="rollbtn" type="button" class="btn btn-light" onclick="roll()">roll</button>
-                    <button id="playbtn" type="button" class="btn btn-light" onclick="play()">play</button>
                 </div>
             </div>
         </div>
@@ -80,6 +82,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
+    <script src="javascripts/uncaught.js"></script>
     <script src="javascripts/board1v1.js"></script>
     <script src="javascripts/main1v1.js"></script>
 </body>

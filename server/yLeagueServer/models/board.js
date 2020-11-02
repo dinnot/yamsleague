@@ -65,9 +65,7 @@ const board = function (data) {
             if (column === 'x2') continue;
             for (let j = 0; j < this.allCells.length; j++) {
                 const cell = this.allCells[j];
-                for (let k = 0; k < 4; k++) {
-                    if (this.data.values[column][cell][k] === null) return true;
-                }
+                if (this.data.values[column][cell][this.data.current.player] === null) return true;
             }
         }
         return false;
