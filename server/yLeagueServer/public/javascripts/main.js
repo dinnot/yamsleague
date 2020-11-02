@@ -727,9 +727,9 @@ function showGames() {
     let htmlEnded = "";
     for (const idx in data.games) {
         let game = data.games[idx];
-        if (game.status === 'waiting') htmlWaiting += `<div class='row'><button type="button" class="btn btn-primary" onclick='loadGame("${game._id}")'>enter ${game._id}</button></div>`;
-        else if (game.status === 'started') htmlStarted += `<div class='row'><button type="button" class="btn btn-warning" onclick='loadGame("${game._id}")'>enter ${game._id}</button></div>`;
-        else if (game.status === 'ended') htmlEnded += `<div class='row'><button type="button" class="btn btn-danger" onclick='loadGame("${game._id}")'>enter ${game._id}</button></div>`;
+        if (game.status === 'waiting') htmlWaiting += `<div class='row game-button'><button type="button" class="btn btn-primary" onclick='loadGame("${game._id}")'>enter ${game._id}</button></div>`;
+        else if (game.status === 'started') htmlStarted += `<div class='row game-button'><button type="button" class="btn btn-warning" onclick='loadGame("${game._id}")'>enter ${game._id}</button></div>`;
+        else if (game.status === 'ended') htmlEnded += `<div class='row game-button'><button type="button" class="btn btn-danger" onclick='loadGame("${game._id}")'>enter ${game._id}</button></div>`;
     }
     $("#rooms-waiting").html(`<div class='title'>Games waiting to start</div>${htmlWaiting||'-'}`);
     $("#rooms-started").html(`<div class='title'>Games in progress</div>${htmlStarted||'-'}`);
