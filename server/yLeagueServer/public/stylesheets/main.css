@@ -283,3 +283,7 @@ html, body, #game, #game > div {
 #roll-area {
     background-color: black;
 }
+
+.game-button{
+    padding: 5px;
+}
