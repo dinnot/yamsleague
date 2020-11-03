@@ -438,6 +438,7 @@ function movesLeft() {
 }
 
 const audioDice = new Audio("/sounds/dice.wav");
+const audioPlay = new Audio("/sounds/play.wav");
 
 function renderMove(move, animate) {
     if (move.data.type === 'put') {
@@ -449,6 +450,7 @@ function renderMove(move, animate) {
         data.currentGame.selected = undefined;
         // animate
         if (animate) {
+            audioPlay.play();
             const indicators = $(`.${tag}-${move.data.cell}, .${tag}-${move.data.column}`);
             indicators.addClass('indicator-selected');
             indicators.animate({
