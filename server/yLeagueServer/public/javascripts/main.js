@@ -382,15 +382,29 @@ function renderEndGame() {
     const winnerFinal = ['W', '1', '1', '1', 'N'];
     const loserFinal = ['L', '0', '5', '3', 'R'];
     const drawFinal = ['D', '2', '4', 'W', '?'];
+    const audioWin = new Audio("/sounds/win.wav");
+    const audioLose = new Audio("/sound/lose.wav");
     let final = drawFinal;
     let pOrder = playerOrder();
     if (pOrder < 0) pOrder = 0;
     if (t1Score > t2Score) {
-        if (pOrder === 0 || pOrder === 2) final = winnerFinal;
-        else final = loserFinal;
+        if (pOrder === 0 || pOrder === 2) {
+            final = winnerFinal;
+            audioWin.play();
+        }
+        else {
+            final = loserFinal;
+            audioLose.play();
+        }
     } else if (t2Score > t1Score) {
-        if (pOrder === 0 || pOrder === 2) final = loserFinal;
-        else final = winnerFinal;
+        if (pOrder === 0 || pOrder === 2) {
+            final = loserFinal;
+            audioLose.play();
+        }
+        else{
+             final = winnerFinal;
+             audioWin.play();
+            }
     }
     for (let i = 0; i < 5; i++) animateDice(i, final[i], 10000);
     $('.action-buttons').hide();
@@ -454,6 +468,9 @@ function movesLeft() {
     return data.currentGame.maxMove - currentMove;
 }
 
+const audioDice = new Audio("/sounds/dice.wav");
+const audioPlay = new Audio("/sounds/play.wav");
+
 function renderMove(move, animate) {
     if (move.data.type === 'put') {
         const tag = data.currentGame.tags[move.player];
@@ -464,6 +481,7 @@ function renderMove(move, animate) {
         data.currentGame.selected = undefined;
         // animate
         if (animate) {
+            audioPlay.play();
             const indicators = $(`.${tag}-${move.data.cell}, .${tag}-${move.data.column}`);
             indicators.addClass('indicator-selected');
             indicators.animate({
@@ -498,6 +516,7 @@ function renderMove(move, animate) {
             }
         }
         if (animate) {
+            audioDice.play();
             setTimeout(renderTurnData, 610);
         } else {
             renderTurnData();
