@@ -369,11 +369,23 @@ function renderEndGame() {
     let pOrder = playerOrder();
     if (pOrder < 0) pOrder = 0;
     if (t1Score > t2Score) {
-        if (pOrder === 0 || pOrder === 2) final = winnerFinal;
-        else final = loserFinal;
+        if (pOrder === 0 || pOrder === 2) {
+            final = winnerFinal;
+            audioWin.play();
+        }
+        else {
+            final = loserFinal;
+            audioLose.play();
+        }
     } else if (t2Score > t1Score) {
-        if (pOrder === 0 || pOrder === 2) final = loserFinal;
-        else final = winnerFinal;
+        if (pOrder === 0 || pOrder === 2) {
+            final = loserFinal;
+            audioLose.play();
+        }
+        else{
+             final = winnerFinal;
+             audioWin.play();
+            }
     }
     for (let i = 0; i < 5; i++) animateDice(i, final[i], 10000);
     $('.action-buttons').hide();
