@@ -454,6 +454,8 @@ function movesLeft() {
     return data.currentGame.maxMove - currentMove;
 }
 
+const audioDice = new Audio("/sounds/dice.wav");
+
 function renderMove(move, animate) {
     if (move.data.type === 'put') {
         const tag = data.currentGame.tags[move.player];
@@ -498,6 +500,7 @@ function renderMove(move, animate) {
             }
         }
         if (animate) {
+            audioDice.play();
             setTimeout(renderTurnData, 610);
         } else {
             renderTurnData();
