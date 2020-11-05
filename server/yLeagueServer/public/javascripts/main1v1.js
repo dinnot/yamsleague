@@ -366,7 +366,7 @@ function renderEndGame() {
     const loserFinal = ['L', '0', '5', '3', 'R'];
     const drawFinal = ['D', '2', '4', 'W', '?'];
     const audioWin = new Audio("/sounds/win.wav");
-    const audioLose = new Audio("/sound/lose.wav");
+    const audioLose = new Audio("/sounds/lose.wav");
     let final = drawFinal;
     let pOrder = playerOrder();
     if (pOrder < 0) pOrder = 0;
