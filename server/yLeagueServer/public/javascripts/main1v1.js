@@ -1,5 +1,35 @@
 const data = {};
 const socket = io();
+const audio = new Audio();
+
+function playDiceAudio() {
+    audio.src = "/sounds/dice.wav";
+    audio.play();
+}
+
+function playPlayAudio() {
+    audio.play();
+}
+
+function playWinAudio() {
+    audio.src = "/sounds/win.wav";
+    audio.play();
+}
+
+function playLoseAudio() {
+    audio.src = "/sounds/lose.wav";
+    audio.play();
+}
+
+function playYamsAudio() {
+    audio.src = "/sounds/yams.wav";
+    audio.play();
+}
+
+function initSounds() {
+    audio.src = "";
+    audio.play();
+}
 
 startErrorLogging();
 
@@ -373,20 +403,20 @@ function renderEndGame() {
     if (t1Score > t2Score) {
         if (pOrder === 0 || pOrder === 2) {
             final = winnerFinal;
-            audioWin.play();
+            playWinAudio();
         }
         else {
             final = loserFinal;
-            audioLose.play();
+            playLoseAudio();
         }
     } else if (t2Score > t1Score) {
         if (pOrder === 0 || pOrder === 2) {
             final = loserFinal;
-            audioLose.play();
+            playLoseAudio();
         }
         else{
              final = winnerFinal;
-             audioWin.play();
+             playWinAudio();
             }
     }
     for (let i = 0; i < 5; i++) animateDice(i, final[i], 10000);
@@ -451,8 +481,14 @@ function movesLeft() {
     return data.currentGame.maxMove - currentMove;
 }
 
-const audioDice = new Audio("/sounds/dice.wav");
-const audioPlay = new Audio("/sounds/play.wav");
+function isYams(dice) {
+     for (let i = 0; i<dice.length-1; i++){
+        if(dice[i] !== dice[i+1]){
+            return false;
+        }
+    }
+    return true;
+}
 
 function renderMove(move, animate) {
     if (move.data.type === 'put') {
@@ -464,7 +500,7 @@ function renderMove(move, animate) {
         data.currentGame.selected = undefined;
         // animate
         if (animate) {
-            audioPlay.play();
+            playPlayAudio();
             const indicators = $(`.${tag}-${move.data.cell}, .${tag}-${move.data.column}`);
             indicators.addClass('indicator-selected');
             indicators.animate({
@@ -499,7 +535,8 @@ function renderMove(move, animate) {
             }
         }
         if (animate) {
-            audioDice.play();
+            if(isYams(move.data.dice)) playYamsAudio();
+            else playDiceAudio();
             setTimeout(renderTurnData, 610);
         } else {
             renderTurnData();
@@ -707,6 +744,7 @@ function updateName(value) {
 }
 
 function createGame() {
+    initSounds();
     showLoadingPage();
     post('/api/v1/game1v1', { name: localStorage.name }).then(response => {
         response.json().then(result => {
@@ -807,6 +845,7 @@ function kickPlayer(id) {
 }
 
 function joinGame(team) {
+    initSounds();
     put(`/api/v1/game1v1/${data.currentGame.game._id}/join`, { team: team, name: localStorage.name }).then(response => response.json().then(result => {
         if (result.code !== "ok") alert('something went wrong');
         data.currentGame.myId = result.id;
