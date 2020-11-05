@@ -13,6 +13,7 @@ router.post('/', function (req, res) {
         status: 'waiting',
         type: 'friendly',
         creator_secret: req.body.secret,
+        name: req.body.name,
     });
     game.save(function (err) {
         if (err) {
@@ -33,6 +34,7 @@ router.post('/', function (req, res) {
             }
             res.send({
                 id: game._id,
+                name: game.name,
             });
         });
     });
@@ -40,7 +42,7 @@ router.post('/', function (req, res) {
 
 /** get all waiting games */
 router.get('/', function (req, res) {
-    GameModel.find().where('type').equals('friendly').select('_id status').exec().then(result => {
+    GameModel.find().where('type').equals('friendly').select('_id status name').exec().then(result => {
         res.send({ games: result });
     }).catch(err => {
         res.send({ error: 'something went wrong :(' });
@@ -170,6 +172,7 @@ router.put('/:id/start', function (req, res) {
                         game.next_move = 1;
                         game.next_turn_secret = players[0].secret;
                         game.ranks = buildRanks();
+                        game.name = `${getPlayerNameByOrder(players,1)} & ${getPlayerNameByOrder(players,3)} vs ${getPlayerNameByOrder(players,2)} & ${getPlayerNameByOrder(players,4)}`;
                         const gameBoard = new board();
                         gameBoard.setRanks(game.ranks);
                         game.board = gameBoard.getData();
@@ -195,6 +198,12 @@ router.put('/:id/start', function (req, res) {
     });
 
 });
+
+function getPlayerNameByOrder(players,wantedOrder){
+    for (const player in players){
+        if(players[player].order === wantedOrder) return players[player].name;
+    }
+}
 
 function shuffleArray(array) {
     let rnd = {};

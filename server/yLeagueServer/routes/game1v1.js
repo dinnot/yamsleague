@@ -13,6 +13,7 @@ router.post('/', function (req, res) {
         status: 'waiting',
         type: 'friendly-1v1',
         creator_secret: req.body.secret,
+        name: req.body.name,
     });
     game.save(function (err) {
         if (err) {
@@ -33,6 +34,7 @@ router.post('/', function (req, res) {
             }
             res.send({
                 id: game._id,
+                name: game.name,
             });
         });
     });
@@ -40,7 +42,7 @@ router.post('/', function (req, res) {
 
 /** get all waiting games */
 router.get('/', function (req, res) {
-    GameModel.find().where('type').equals('friendly-1v1').select('_id status').exec().then(result => {
+    GameModel.find().where('type').equals('friendly-1v1').select('_id status name').exec().then(result => {
         res.send({ games: result });
     }).catch(err => {
         res.send({ error: 'something went wrong :(' });
@@ -156,6 +158,7 @@ router.put('/:id/start', function (req, res) {
                         // build game board, next_move, next_turn_secret
                         game.next_move = 1;
                         game.next_turn_secret = players[0].secret;
+                        game.name = `${players[0].name} vs ${players[1].name}`;
                         game.ranks = buildRanks();
                         const gameBoard = new board();
                         gameBoard.setRanks(game.ranks);
