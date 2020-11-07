@@ -74,13 +74,6 @@ function startErrorLogging() {
 }
 
 // socket.io events
-socket.on('disconnect', function (data) {
-    console.log('socket disconnect', data);
-});
-
-socket.on('reconnect_attempt', function (data) {
-    console.log('socket reconnect_attempt', data);
-});
 socket.on('players_changed', function (players) {
     data.currentGame.players = players;
     data.currentGame.players.sort((p1, p2) => [p1.order - p2.order]);
@@ -113,6 +106,16 @@ socket.on('hold_selection', function (move, index, held) {
     if (move !== data.currentGame.board.getData().current.move) return;
     data.currentGame.hold[index] = held;
     drawHold(index);
+});
+socket.on('disconnect', function () {
+    showLoadingPage();
+});
+socket.on('reconnect', function () {
+    if (data.currentGame != null && data.currentGame.game != null && data.currentGame.game._id != null) {
+        loadGame(data.currentGame.game._id);
+    } else {
+        showHomePage();
+    }
 });
 
 function registerMove(move) {

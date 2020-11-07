@@ -107,6 +107,16 @@ socket.on('hold_selection', function (move, index, held) {
     data.currentGame.hold[index] = held;
     drawHold(index);
 });
+socket.on('disconnect', function () {
+    showLoadingPage();
+});
+socket.on('reconnect', function () {
+    if (data.currentGame != null && data.currentGame.game != null && data.currentGame.game._id != null) {
+        loadGame(data.currentGame.game._id);
+    } else {
+        showHomePage();
+    }
+});
 
 function registerMove(move) {
     if (isMoveSet(move.order)) return;
