@@ -4,7 +4,7 @@ html, body, #game, #game > div {
     margin: 0px;
 }
 
-* {
+*:not(input) {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
     -khtml-user-select: none; /* Konqueror HTML */
@@ -291,6 +291,8 @@ html, body, #game, #game > div {
 
 #roll-area {
     background-color: black;
+    min-height: 58px;
+    height: 58px;
 }
 
 .game-button{

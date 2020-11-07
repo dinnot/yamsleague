@@ -1,35 +1,58 @@
 const data = {};
 const socket = io();
-const audio = new Audio();
+let audioContext = null;
+const sounds = {};
+
+function loadSound(name) {
+    sounds[name] = null;
+    fetch(`/sounds/${name}.wav`).then(response => response.arrayBuffer()).then(buffer => {
+        audioContext.decodeAudioData(buffer, decodedBuffer => {
+            sounds[name] = decodedBuffer;
+        });
+    });
+}
+
+function loadSounds() {
+    if (audioContext === null) return;
+    loadSound("nothing");
+    loadSound("win");
+    loadSound("lose");
+    loadSound("yams");
+    loadSound("dice");
+    loadSound("play");
+}
+
+function playSound(name) {
+    if (audioContext === null) return;
+    if (sounds[name] === null || sounds[name] === undefined) return;
+    const source = audioContext.createBufferSource();
+    source.buffer = sounds[name];
+    source.connect(audioContext.destination);
+    source.start(0);
+}
 
 function playDiceAudio() {
-    audio.src = "/sounds/dice.wav";
-    audio.play();
+    playSound("dice");
 }
 
 function playPlayAudio() {
-    audio.src = "/sounds/play.wav";
-    audio.play();
+    playSound("play");
 }
 
 function playWinAudio() {
-    audio.src = "/sounds/win.wav";
-    audio.play();
+    playSound("win");
 }
 
 function playLoseAudio() {
-    audio.src = "/sounds/lose.wav";
-    audio.play();
+    playSound("lose");
 }
 
 function playYamsAudio() {
-    audio.src = "/sounds/yams.wav";
-    audio.play();
+    playSound("yams");
 }
 
 function initSounds() {
-    audio.src = "";
-    audio.play();
+    playSound("nothing");
 }
 
 startErrorLogging();
@@ -97,6 +120,13 @@ function isMoveSet(order) {
 }
 
 function init() {
+    try {
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioContext();
+        loadSounds();
+    } catch (e) {
+        // audio not supported on browser
+    }
     if (localStorage.getItem('secret') === null) {
         localStorage.secret = uuidv4();
     }
@@ -759,6 +789,8 @@ function buildCell(column, cell) {
 }
 
 function showSettingsPage() {
+    let name = localStorage.name || "";
+    $("#settings input").val(name);
     showPage('settings');
 }
 
@@ -945,4 +977,4 @@ function showPage(id) {
     $(`#${id}.page`).show();
 }
 
-init();
+window.addEventListener('load', init, false);
