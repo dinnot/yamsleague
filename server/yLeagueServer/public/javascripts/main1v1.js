@@ -5,7 +5,18 @@ startErrorLogging();
 
 function startErrorLogging() {
     uncaught.start();
-    uncaught.addListener(err => post('/api/v1/error', { data: err, browser: navigator.userAgent, player: localStorage.name }));
+    uncaught.addListener((err, event) => {
+        post('/api/v1/error', {
+            data: {
+                message: err.message,
+                stack: err.stack,
+                evt_location: `${event.filename}:${event.lineno}:${event.colno}`,
+                evt_message: event.message,
+                evt_timestamp: event.timeStamp,
+                evt_type: event.type,
+            }, browser: navigator.userAgent, player: localStorage.name
+        })
+    });
 }
 
 // socket.io events

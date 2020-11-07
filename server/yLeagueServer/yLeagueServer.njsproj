@@ -32,6 +32,7 @@
     <Content Include="app.js" />
     <Content Include="models\board1v1.js" />
     <Content Include="models\board.js" />
+    <Content Include="models\error.js" />
     <Content Include="models\game.js">
       <SubType>Code</SubType>
     </Content>
@@ -49,6 +50,8 @@
     <Content Include="public\javascripts\main.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="public\javascripts\uncaught.js" />
+    <Content Include="routes\error.js" />
     <Content Include="routes\game1v1.js" />
     <Content Include="routes\index.js" />
     <Content Include="routes\game.js" />
