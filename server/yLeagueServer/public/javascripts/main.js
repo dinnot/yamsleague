@@ -439,6 +439,23 @@ function renderEndGame() {
         }
         $(`#result_${playerTag}`).html(data.currentGame.board.getPlayerFinalScore(p));
     }
+    for (let i = 0; i < columns.length; i++) {
+        const column = columns[i];
+        for (let j = 0; j < cells.length; j++) {
+            const cell = cells[j];
+
+            // cleanup temp values
+            for (let p = 0; p < 4; p++) {
+                const val = data.currentGame.board.getData().values[column][cell][p];
+                const playerTag = data.currentGame.tags[p];
+                const element = $(`#${column}_${cell}_${playerTag}`);
+                $("body").off("click", `#${column}_${cell}_${playerTag}`);
+                element.html(scoreVal(val));
+                element.addClass('available');
+                element.removeClass('temp');
+            }
+        }
+    }
     const t1Score = data.currentGame.board.getTeamFinalScore(1);
     const t2Score = data.currentGame.board.getTeamFinalScore(2);
     const t1Names = `<span class='player ${data.currentGame.tags[0]}'>${data.currentGame.players[0].name}</span>&nbsp;&&nbsp;<span class='player ${data.currentGame.tags[2]}'>${data.currentGame.players[2].name}</span>`;
@@ -602,8 +619,8 @@ function renderMove(move, animate) {
             }
         }
         if (animate) {
-            if(isYams(move.data.dice)) playYamsAudio();
-            else playDiceAudio(); 
+            if(isYams(move.data.dice)) setTimeout(playYamsAudio, 610);
+            playDiceAudio(); 
             setTimeout(renderTurnData, 610);
         } else {
             renderTurnData();
@@ -617,7 +634,7 @@ function animateDice(idx, final, left) {
         $(`#dice-${idx}`).html(final);
     } else {
         $(`#dice-${idx}`).html(randomDice());
-        const wait = Math.min(left, 100);
+        const wait = Math.min(left, 70);
         const newLeft = left - wait;
         setTimeout(() => animateDice(idx, final, newLeft), wait);
     }

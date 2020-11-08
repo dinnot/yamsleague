@@ -412,6 +412,23 @@ function renderEndGame() {
             $(`#dice-${i}`).html('#');
         }
     }
+    for (let i = 0; i < columns.length; i++) {
+        const column = columns[i];
+        for (let j = 0; j < cells.length; j++) {
+            const cell = cells[j];
+
+            // cleanup temp values
+            for (let p = 0; p < 2; p++) {
+                const val = data.currentGame.board.getData().values[column][cell][p];
+                const playerTag = data.currentGame.tags[p];
+                const element = $(`#${column}_${cell}_${playerTag}`);
+                $("body").off("click", `#${column}_${cell}_${playerTag}`);
+                element.html(scoreVal(val));
+                element.addClass('available');
+                element.removeClass('temp');
+            }
+        }
+    }
     for (let p = 0; p < 2; p++) {
         const playerTag = data.currentGame.tags[p];
         for (let i = 0; i < columns.length; i++) {
@@ -447,8 +464,6 @@ function renderEndGame() {
     const winnerFinal = ['W', '1', '1', '1', 'N'];
     const loserFinal = ['L', '0', '5', '3', 'R'];
     const drawFinal = ['D', '2', '4', 'W', '?'];
-    const audioWin = new Audio("/sounds/win.wav");
-    const audioLose = new Audio("/sounds/lose.wav");
     let final = drawFinal;
     let pOrder = playerOrder();
     if (pOrder < 0) pOrder = 0;
@@ -587,8 +602,8 @@ function renderMove(move, animate) {
             }
         }
         if (animate) {
-            if(isYams(move.data.dice)) playYamsAudio();
-            else playDiceAudio();
+            if (isYams(move.data.dice)) setTimeout(playYamsAudio, 610);
+            playDiceAudio();
             setTimeout(renderTurnData, 610);
         } else {
             renderTurnData();
@@ -602,7 +617,7 @@ function animateDice(idx, final, left) {
         $(`#dice-${idx}`).html(final);
     } else {
         $(`#dice-${idx}`).html(randomDice());
-        const wait = Math.min(left, 100);
+        const wait = Math.min(left, 70);
         const newLeft = left - wait;
         setTimeout(() => animateDice(idx, final, newLeft), wait);
     }
