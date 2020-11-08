@@ -310,7 +310,7 @@ function renderTurnData() {
                 if (playerTag !== 'p') finalScore = prettyPoints(finalScore);
                 ptsElement.html(finalScore);
             } else {
-                ttElement.html("?");
+                ttElement.html(playerTag === "p" ? data.currentGame.board.getScoreWithBonus(data.currentGame.board.getPlayerColumnScore(column, p)) : "?");
                 ptsElement.html("?");
             }
         }
@@ -330,7 +330,7 @@ function renderTurnData() {
 }
 
 function showScores() {
-    return data.currentGame.board.getData().current.noPuts >= 26 && data.currentGame.board.getData().current.noPuts <= 130;
+    return data.currentGame.board.getData().current.noPuts >= 52 && data.currentGame.board.getData().current.noPuts <= 130;
 }
 
 function vibrate(pattern) {
