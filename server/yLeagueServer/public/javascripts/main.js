@@ -218,6 +218,7 @@ function renderTurnData() {
     $(".dice").addClass(playerTag);
     for (let i = 0; i < 5; i++) {
         $("body").off("click", `#dice-${i}`);
+        $(`#dice-${i}`).removeClass('clickable');
         drawHold(i);
     }
     if (mLeft > 10) return;
@@ -234,6 +235,7 @@ function renderTurnData() {
         if (data.currentGame.board.getData().current.noRolls !== 0) {
             for (let i = 0; i < 5; i++) {
                 $("body").on("click", `#dice-${i}`, () => toggleHold(i));
+                $(`#dice-${i}`).addClass('clickable');
             }
         }
         if (data.currentGame.board.canRoll()) {
@@ -264,6 +266,7 @@ function renderTurnData() {
             element.html("&nbsp;");
             element.removeClass('temp');
             element.removeClass('available');
+            element.removeClass('clickable');
             if (val !== null) {
                 element.html(scoreVal(val));
                 element.addClass('available');
@@ -272,6 +275,7 @@ function renderTurnData() {
                 if (data.currentGame.board.getData().current.noRolls > 0) {
                     if (cPlayer.yourself && mLeft === 0) {
                         $("body").on("click", `#${column}_${cell}_${playerTag}`, () => toggleSelect(column, cell));
+                        element.addClass('clickable');
                     }
                     element.addClass('temp');
                     element.html(getScoreFromScores(column, cell, data.currentGame.board.getScore(column, cell, data.currentGame.board.getData().current.dice)));
@@ -285,6 +289,7 @@ function renderTurnData() {
                 const playerTag = data.currentGame.tags[p];
                 const element = $(`#${column}_${cell}_${playerTag}`);
                 $("body").off("click", `#${column}_${cell}_${playerTag}`);
+                element.removeClass('clickable');
                 if (val !== null) {
                     element.html(scoreVal(val));
                     element.addClass('available');

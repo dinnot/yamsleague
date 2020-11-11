@@ -298,3 +298,7 @@ html, body, #game, #game > div {
 .game-button{
     padding: 5px;
 }
+
+.clickable {
+    cursor: pointer;
+}
