@@ -855,16 +855,20 @@ function showGames() {
     let htmlWaiting = "";
     let htmlStarted = "";
     let htmlEnded = "";
+    let endedCount = 0;
     for (const idx in data.games) {
         let game = data.games[idx];
-        if(game.name === undefined) game.name = game._id; 
+        if (game.name === undefined) game.name = game._id;
         if (game.status === 'waiting') htmlWaiting += `<div class='row game-button'><button type="button" class="btn btn-primary" onclick='loadGame("${game._id}")'>join ${game.name}'s game</button></div>`;
-        else if (game.status === 'started') htmlStarted += `<div class='row game-button'><button type="button" class="btn btn-warning" onclick='loadGame("${game._id}")'>join ${game.name} game</button></div>`;
-        else if (game.status === 'ended') htmlEnded += `<div class='row game-button'><button type="button" class="btn btn-danger" onclick='loadGame("${game._id}")'>join ${game.name}</button></div>`;
+        else if (game.status === 'started') htmlStarted += `<div class='row game-button'><button type="button" class="btn btn-warning" onclick='loadGame("${game._id}")'>join ${game.name}</button></div>`;
+        else if (game.status === 'ended') {
+            endedCount++;
+            htmlEnded += `<div class='row game-button'><button type="button" class="btn btn-danger" onclick='loadGame("${game._id}")'>see ${endedCount}.${game.name}</button></div>`;
+        }
     }
-    $("#rooms-waiting").html(`<div class='title'>Games waiting to start</div>${htmlWaiting||'-'}`);
-    $("#rooms-started").html(`<div class='title'>Games in progress</div>${htmlStarted||'-'}`);
-    $("#rooms-ended").html(`<div class='title'>Finished games</div>${htmlEnded||'-'}`);
+    $("#rooms-waiting").html(`<div class='title'>Games waiting to start</div>${htmlWaiting || '-'}`);
+    $("#rooms-started").html(`<div class='title'>Games in progress</div>${htmlStarted || '-'}`);
+    $("#rooms-ended").html(`<div class='title'>Finished games</div>${htmlEnded || '-'}`);
 }
 
 function loadGame(id) {
